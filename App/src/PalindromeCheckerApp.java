@@ -1,31 +1,35 @@
+import java.util.*;
+
 /**
- * UseCasePalindromeChecker
+ * UseCase6PalindromeChecker
  *
  * Description: Checks whether a string is a palindrome
- * using a Stack data structure.
+ * using both a Queue (FIFO) and a Stack (LIFO) to demonstrate
+ * the behavioral difference between these data structures.
  *
+ * - Enqueues characters into a queue
  * - Pushes characters into a stack
- * - Pops characters to reverse order
- * - Compares with original characters
+ * - Compares dequeue vs pop to validate palindrome
  *
  * Key Concepts:
+ * - Queue (FIFO)
  * - Stack (LIFO)
- * - Push and Pop operations
- * - Boolean flag logic
+ * - Enqueue & Dequeue operations
+ * - Pop operation
+ * - Logical comparison for palindrome
  *
- * UC5: Stack-Based Palindrome Checker
- * Goal: Use stack to reverse characters and validate palindrome.
+ * UC6: Queue + Stack Based Palindrome Check
+ * Goal: Demonstrate FIFO vs LIFO using Queue and Stack.
  *
  * Flow:
- * 1. Push characters into stack
- * 2. Pop and compare with original string
- * 3. Print result
+ * 1. Enqueue characters into queue
+ * 2. Push characters into stack
+ * 3. Compare dequeue vs pop
+ * 4. Print result
  *
  * @author Ananya
  * @version 1.0
  */
-import java.util.Stack;
-
 public class PalindromeCheckerApp {
 
     /**
@@ -36,29 +40,33 @@ public class PalindromeCheckerApp {
      */
     public static void main(String[] args) {
 
-        // Input string to check (hardcoded for now)
-        String input = "noon";
+        // Input string to check
+        String input = "civic";
 
-        // Create a stack to store characters
+        // Create a queue to store characters in FIFO order
+        Queue<Character> queue = new LinkedList<>();
+
+        // Create a stack to store characters in LIFO order
         Stack<Character> stack = new Stack<>();
 
-        // Push each character from input into the stack
+        // Insert each character into both queue and stack
         for (char c : input.toCharArray()) {
-            stack.push(c);
+            queue.add(c);   // Enqueue character
+            stack.push(c);  // Push character
         }
 
         // Assume the string is a palindrome
         boolean isPalindrome = true;
 
-        // Compare original string with stack reversed characters
-        for (char c : input.toCharArray()) {
-            if (stack.pop() != c) {
+        // Compare queue (FIFO) with stack (LIFO)
+        while (!queue.isEmpty()) {
+            if (queue.remove() != stack.pop()) {
                 isPalindrome = false;
                 break; // Stop early if mismatch found
             }
         }
 
-        // Print the result
+        // Print input and result
         System.out.println("Input: " + input);
         System.out.println("Is Palindrome? " + isPalindrome);
     }
