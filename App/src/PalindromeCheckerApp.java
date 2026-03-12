@@ -1,25 +1,54 @@
 /**
  * ================================================================
- * MAIN CLASS - PalindromeCheckerApp
+ * MAIN CLASS - UseCase11PalindromeCheckerApp
  * ================================================================
  *
- * Use Case 10: Case-Insensitive & Space-Ignored Palindrome
+ * Use Case 11: Object-Oriented Palindrome Service
  *
  * Description:
- * This class validates a palindrome after preprocessing
- * the input string.
+ * This program checks whether a given string is a palindrome
+ * using a separate PalindromeChecker service class.
  *
- * Normalization includes:
- * - Removing spaces and symbols
- * - Converting to lowercase
- *
- * Example:
- * "A man a plan a canal Panama"
+ * Key Concepts:
+ * - Encapsulation
+ * - Single Responsibility Principle
  */
 
 import java.util.Scanner;
 
-public class PalindromeCheckerApp {
+/**
+ * PalindromeChecker class encapsulates palindrome logic.
+ */
+class PalindromeChecker {
+
+    /**
+     * Checks if the input string is a palindrome.
+     * @param input The string to check
+     * @return true if palindrome, false otherwise
+     */
+    public boolean checkPalindrome(String input) {
+
+        // Normalize input by removing non-alphanumeric and converting to lowercase
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        int left = 0;
+        int right = normalized.length() - 1;
+
+        while (left < right) {
+            if (normalized.charAt(left) != normalized.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
+/**
+ * Application entry point for UC11.
+ */
+public class rPalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -28,21 +57,11 @@ public class PalindromeCheckerApp {
         System.out.print("Input: ");
         String input = scanner.nextLine();
 
-        // Normalize string
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        PalindromeChecker checker = new PalindromeChecker();
 
-        boolean isPalindrome = true;
+        boolean result = checker.checkPalindrome(input);
 
-        // Compare characters from both ends
-        for (int i = 0; i < normalized.length() / 2; i++) {
-
-            if (normalized.charAt(i) != normalized.charAt(normalized.length() - 1 - i)) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        System.out.println("Is Palindrome: " + isPalindrome);
+        System.out.println("Is Palindrome: " + result);
 
         scanner.close();
     }
