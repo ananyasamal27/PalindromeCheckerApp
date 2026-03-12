@@ -1,67 +1,66 @@
 /**
  * ================================================================
- * MAIN CLASS - UseCase11PalindromeCheckerApp
+ * MAIN CLASS - PalindromeCheckerApp
  * ================================================================
  *
- * Use Case 11: Object-Oriented Palindrome Service
+ * Use Case 12: Strategy Pattern for Palindrome Algorithms (Advanced)
  *
  * Description:
- * This program checks whether a given string is a palindrome
- * using a separate PalindromeChecker service class.
- *
- * Key Concepts:
- * - Encapsulation
- * - Single Responsibility Principle
+ * Checks if a string is palindrome using Stack strategy internally.
  */
 
 import java.util.Scanner;
+import java.util.Stack;
 
-/**
- * PalindromeChecker class encapsulates palindrome logic.
- */
-class PalindromeChecker {
+interface PalindromeStrategy {
+    boolean check(String input);
+}
 
-    /**
-     * Checks if the input string is a palindrome.
-     * @param input The string to check
-     * @return true if palindrome, false otherwise
-     */
-    public boolean checkPalindrome(String input) {
+class StackStrategy implements PalindromeStrategy {
 
-        // Normalize input by removing non-alphanumeric and converting to lowercase
+    @Override
+    public boolean check(String input) {
+        // Normalize input
         String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        int left = 0;
-        int right = normalized.length() - 1;
+        Stack<Character> stack = new Stack<>();
 
-        while (left < right) {
-            if (normalized.charAt(left) != normalized.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
+        for (char c : normalized.toCharArray()) {
+            stack.push(c);
         }
+
+        for (char c : normalized.toCharArray()) {
+            if (c != stack.pop()) return false;
+        }
+
         return true;
     }
 }
 
-/**
- * Application entry point for UC11.
- */
-public class rPalindromeCheckerApp {
+public class PalindromeCheckerApp {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeCheckerApp() {
+        // Use StackStrategy internally
+        this.strategy = new StackStrategy();
+    }
+
+    public boolean check(String input) {
+        return strategy.check(input);
+    }
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Input: ");
+        System.out.print("Input : ");
         String input = scanner.nextLine();
 
-        PalindromeChecker checker = new PalindromeChecker();
+        PalindromeCheckerApp app = new PalindromeCheckerApp();
 
-        boolean result = checker.checkPalindrome(input);
+        boolean result = app.check(input);
 
-        System.out.println("Is Palindrome: " + result);
+        System.out.println("Is Palindrome? : " + result);
 
         scanner.close();
     }
